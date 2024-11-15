@@ -35,7 +35,7 @@ services:
     restart: always
 
   cadvisor:
-    image: google/cadvisor:latest
+    image: bitnami/cadvisor:latest
     container_name: cadvisor
     volumes:
       - /:/rootfs:ro

@@ -35,8 +35,9 @@ services:
     restart: always
 
   cadvisor:
-    image: bitnami/cadvisor:latest
+    image: google/cadvisor:latest
     container_name: cadvisor
+    platform: linux/arm64
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw

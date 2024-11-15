@@ -34,16 +34,11 @@ services:
       - monitoring
     restart: always
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    platform: linux/arm64
+  docker-exporter:
+    image: stefanprodan/docker-prometheus-exporter:latest
+    container_name: docker-exporter
     volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/lib/docker/overlay2:/var/lib/docker/overlay2:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "8080:8080"
     networks:

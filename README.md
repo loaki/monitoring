@@ -5,3 +5,4 @@ select `prometheus`
 url `http://prometheus:9090`
 
 `dashboards` > `import dashboard`
+Node Exporter dashboard using ID 1860.

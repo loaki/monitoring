@@ -1,6 +1,11 @@
 - targets:
     # Replace with your Nextcloud public URL.
-    # Example: https://cloud.example.fr/status.php
     - https://cloud.example.fr/status.php
   labels:
     service: nextcloud
+
+- targets:
+    # Replace with your Lidarr public URL.
+    - https://lidarr.example.fr/api/v1/health
+  labels:
+    service: lidarr

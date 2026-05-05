@@ -1,0 +1,6 @@
+- targets:
+    # Replace with your Nextcloud public URL.
+    # Example: https://cloud.example.fr/status.php
+    - https://cloud.example.fr/status.php
+  labels:
+    service: nextcloud

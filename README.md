@@ -4,9 +4,15 @@
 
 1. Create environment file for Grafana credentials:
 	- `cp .env.template .env`
-2. Edit `.env` and set a strong `GRAFANA_ADMIN_PASSWORD`.
+2. Edit `.env` and set:
+	- `GRAFANA_ADMIN_PASSWORD` (strong password)
+	- `GRAFANA_DOMAIN` (example: `grafana.example.com`)
 3. Start the stack:
 	- `docker compose up -d`
+4. Access Grafana through Traefik:
+	- `https://<GRAFANA_DOMAIN>`
+
+No monitoring service is published on host ports anymore.
 
 `connections` > `data sources` > `add data source`  
 select `prometheus`  

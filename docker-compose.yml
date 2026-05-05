@@ -5,8 +5,6 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - ./blackbox-targets.yml:/etc/prometheus/blackbox-targets.yml:ro
-    ports:
-      - "9090:9090"
     networks:
       - monitoring
     restart: always
@@ -18,8 +16,6 @@ services:
       - --config.file=/etc/blackbox_exporter/config.yml
     volumes:
       - ./blackbox.yml:/etc/blackbox_exporter/config.yml:ro
-    ports:
-      - "9115:9115"
     networks:
       - monitoring
     restart: always
@@ -32,10 +28,18 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-CHANGE_ME_GRAFANA_PASSWORD}
     volumes:
       - ./grafana.ini:/etc/grafana/grafana.ini
-    ports:
-      - "3000:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.grafana.rule=Host(`${GRAFANA_DOMAIN:-grafana.localhost}`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.grafana.middlewares=secure-headers@file,default-auth@file,rate-limit@file"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     networks:
       - monitoring
+      - traefik
     restart: always
 
   node-exporter:
@@ -45,8 +49,6 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    ports:
-      - "9100:9100"
     networks:
       - monitoring
     restart: always
@@ -59,8 +61,6 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - '8080:8080'
     networks:
       - monitoring
     restart: always
@@ -68,3 +68,6 @@ services:
 networks:
   monitoring:
     driver: bridge
+  traefik:
+    external: true
+    name: traefik
